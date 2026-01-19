@@ -69,7 +69,7 @@ export default function About() {
                         photographer at heart. My journey behind the camera is driven by an
                         insatiable curiosity for the world—its landscapes, cultures, and
                         untold stories. Photography, for me, is more than just capturing
-                        moments; it’s about preserving emotions, unraveling narratives, and
+                        moments; it is about preserving emotions, unraveling narratives, and
                         sharing perspectives that transcend borders.
                     </Text>
 

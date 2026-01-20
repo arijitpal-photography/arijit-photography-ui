@@ -1,70 +1,247 @@
-# Getting Started with Create React App
+# Arijit Photography Website
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A professional photography portfolio website built with React and deployed on AWS S3 with CloudFront CDN.
 
-## Available Scripts
+## 🚀 Quick Start
 
-In the project directory, you can run:
+```bash
+# Clone the repository
+git clone git@github.com:arijitpal-photography/arijit-photography-ui.git
+cd arijit-photography-ui
 
-### `npm start`
+# Install dependencies
+npm install
 
-Runs the app in the development mode.\
+# Start development server
+npm start
+```
+
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 📁 Project Structure
 
-### `npm test`
+```
+arijit-photography-ui/
+├── public/
+│   ├── index.html
+│   └── photos/           # Static images (JPGs, PNGs, etc.)
+├── src/
+│   ├── components/       # Reusable UI components
+│   ├── layouts/          # Page layout components
+│   ├── pages/            # Individual page components
+│   └── App.jsx           # Main app with routing
+├── .github/workflows/
+│   └── deploy.yaml       # CI/CD deployment pipeline
+└── package.json
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Development Setup
 
-### `npm run build`
+### Prerequisites
+- Node.js 16+ 
+- Git
+- AWS CLI (for deployment testing)
+- GitHub account with SSH keys configured
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Environment Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Configure Git SSH** (Recommended for large files):
+   ```bash
+   # Add SSH key to GitHub
+   ssh-add ~/.ssh/id_ed25519__arijitpal-tech
+   
+   # Test connection
+   ssh -T git@github.com
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-### `npm run eject`
+3. **Start Development**:
+   ```bash
+   npm start          # Development server
+   npm test           # Run tests
+   npm run build      # Production build
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🚀 Deployment Setup
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### AWS Infrastructure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+The website uses the following AWS services:
+- **S3 Bucket**: `arijitpal-photography-static-site-s3` (static file storage)
+- **CloudFront**: CDN for global content delivery
+- **Route 53**: Custom domain management (if applicable)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### GitHub Actions CI/CD
 
-## Learn More
+The deployment is automated via GitHub Actions. To set up:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Repository Secrets** (Settings → Secrets and variables → Actions):
+   ```
+   AWS_ACCESS_KEY_ID: Your AWS access key
+   AWS_SECRET_ACCESS_KEY: Your AWS secret key
+   AWS_REGION: us-east-1 (or your preferred region)
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+2. **Deployment Workflow** (`.github/workflows/deploy.yaml`):
+   - Triggers on push to `main` branch
+   - Builds the React application
+   - Deploys to S3 bucket
+   - CloudFront automatically serves updated content
 
-### Code Splitting
+### Manual Deployment (Optional)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+For manual deployment without GitHub Actions:
 
-### Analyzing the Bundle Size
+```bash
+# Build the project
+npm run build
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Deploy to S3
+aws s3 sync build/ s3://arijitpal-photography-static-site-s3 --delete
 
-### Making a Progressive Web App
+# Invalidate CloudFront cache
+aws cloudfront create-invalidation --distribution-id YOUR_DISTRIBUTION_ID --paths "/*"
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 📸 Managing Photos
 
-### Advanced Configuration
+### Adding New Photos
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. **Add to `public/photos/` directory**:
+   ```bash
+   # Copy photos to public folder
+   cp /path/to/your/photo.jpg public/photos/
+   
+   # Commit changes
+   git add public/photos/
+   git commit -m "Add new photo: photo.jpg"
+   git push
+   ```
 
-### Deployment
+2. **Update Components**:
+   - Import and reference new photos in React components
+   - Use relative paths: `/photos/your-photo.jpg`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Photo Guidelines
 
-### `npm run build` fails to minify
+- **Format**: JPG for photos, PNG for graphics/logos
+- **Size**: Optimize for web (max 2MB per image)
+- **Naming**: Use descriptive names with hyphens (e.g., `sunset-beach.jpg`)
+- **Thumbnails**: Create thumbnail versions for gallery views
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 🔧 Common Issues & Troubleshooting
+
+### Issue 1: Changes Not Reflecting on Website
+
+**Symptoms**: Code changes deployed but website shows old content
+
+**Causes & Solutions**:
+- **CloudFront Cache**: Invalidate CDN cache
+  ```bash
+  # AWS Console: CloudFront → Invalidations → Create
+  # Or via CLI:
+  aws cloudfront create-invalidation --distribution-id YOUR_ID --paths "/*"
+  ```
+- **Browser Cache**: Hard refresh (`Cmd+Shift+R` on Mac, `Ctrl+Shift+R` on Windows)
+- **Build Cache**: GitHub Actions might use cached dependencies
+
+### Issue 2: Git Push Fails with Large Files
+
+**Symptoms**: `git push` fails or is very slow with large images
+
+**Solutions**:
+- **Use SSH instead of HTTPS**:
+  ```bash
+  git remote set-url origin git@github.com:arijitpal-photography/arijit-photography-ui.git
+  ```
+- **Optimize Images**: Compress images before adding
+- **Use Git LFS** (if frequently adding large files):
+  ```bash
+  git lfs track "*.jpg"
+  git lfs track "*.png"
+  ```
+
+### Issue 3: Deployment Fails
+
+**Symptoms**: GitHub Actions workflow fails
+
+**Common Causes**:
+- **AWS Credentials**: Verify secrets are correct
+- **Build Errors**: Check `npm run build` locally first
+- **S3 Permissions**: Ensure AWS credentials have S3 write access
+
+**Debugging Steps**:
+1. Check GitHub Actions logs
+2. Run `npm run build` locally
+3. Test AWS credentials manually
+
+### Issue 4: Photos Not Loading
+
+**Symptoms**: Images show broken or don't load
+
+**Solutions**:
+- **Check File Paths**: Ensure photos are in `public/photos/`
+- **Verify Case Sensitivity**: Use exact case in file references
+- **Check S3 Sync**: Confirm files were uploaded to S3
+- **Clear CDN Cache**: Invalidate CloudFront
+
+### Issue 5: Development Server Issues
+
+**Symptoms**: `npm start` fails or shows errors
+
+**Solutions**:
+- **Clear Node Modules**:
+  ```bash
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
+- **Check Node Version**: Ensure Node.js 16+
+- **Port Conflicts**: Kill processes on port 3000
+
+## 🔄 Maintenance Tasks
+
+### Regular Maintenance
+
+1. **Monthly**:
+   - Update dependencies: `npm update`
+   - Check for security vulnerabilities: `npm audit`
+
+2. **Quarterly**:
+   - Review AWS costs and usage
+   - Update Node.js version if needed
+   - Backup important photos
+
+3. **Annually**:
+   - Renew SSL certificates (if using custom domain)
+   - Review and update AWS IAM permissions
+
+### Performance Optimization
+
+- **Image Optimization**: Compress photos before upload
+- **Bundle Analysis**: Use `npm run build -- --analyze` to check bundle size
+- **CDN Settings**: Review CloudFront caching policies
+
+## 📞 Support & Resources
+
+### Useful Links
+- [GitHub Repository](https://github.com/arijitpal-photography/arijit-photography-ui)
+- [AWS S3 Console](https://console.aws.amazon.com/s3/)
+- [CloudFront Console](https://console.aws.amazon.com/cloudfront/)
+- [React Documentation](https://reactjs.org/)
+
+### Getting Help
+- Check GitHub Issues for common problems
+- Review AWS CloudWatch logs for deployment issues
+- Use browser DevTools for frontend debugging
+
+## 📄 License
+
+This project is private and proprietary to Arijit Photography.
+
+---
+
+**Last Updated**: January 2026

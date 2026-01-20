@@ -86,7 +86,20 @@ The deployment is automated via GitHub Actions. To set up:
    AWS_REGION: us-east-1 (or your preferred region)
    ```
 
-2. **Deployment Workflow** (`.github/workflows/deploy.yaml`):
+2. **Creating AWS Credentials** (if needed):
+   - Go to AWS Console → IAM → Users
+   - Create user or select existing user
+   - Go to Security credentials → Create access key
+   - Select "Command Line Interface (CLI)" use case
+   - Copy and securely store both Access key ID and Secret access key
+   - Add them to GitHub repository secrets
+
+3. **If credentials are lost**:
+   - Deactivate old keys in IAM → Users → [Username] → Security credentials
+   - Create new access keys following the steps above
+   - Update GitHub repository secrets with new credentials
+
+4. **Deployment Workflow** (`.github/workflows/deploy.yaml`):
    - Triggers on push to `main` branch
    - Builds the React application
    - Deploys to S3 bucket

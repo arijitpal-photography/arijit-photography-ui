@@ -99,6 +99,80 @@ This runbook provides step-by-step procedures for setting up, maintaining, and t
    AWS_REGION: us-east-1
    ```
 
+#### Creating/Recovering AWS Credentials
+
+**If you need to create new AWS credentials:**
+
+1. **Sign in to AWS Console**: https://console.aws.amazon.com/
+
+2. **Navigate to IAM Service**:
+   - In the search bar, type "IAM" and select it
+   - Or go to: https://console.aws.amazon.com/iam/
+
+3. **Create New IAM User** (if needed):
+   - Click "Users" in the left sidebar
+   - Click "Create user"
+   - Enter username: "arijitpalphotography-admin" (or similar)
+   - Select "Attach policies directly"
+   - Add these policies:
+     - `AmazonS3FullAccess` (or more restrictive S3 policy)
+     - `CloudFrontFullAccess` (or more restrictive CloudFront policy)
+   - Click "Next" → "Create user"
+
+4. **Generate Access Keys**:
+   - Click on the newly created user
+   - Go to "Security credentials" tab
+   - Click "Create access key"
+   - Select "Command Line Interface (CLI)" as use case
+   - Check "I understand the above recommendation"
+   - Click "Next"
+   - Add description: "GitHub Actions deployment"
+   - Click "Create access key"
+
+5. **Save Credentials**:
+   - **IMPORTANT**: Copy both the Access key ID and Secret access key
+   - Store them securely (password manager, encrypted file)
+   - You won't be able to see the secret key again
+
+6. **Add to GitHub Secrets**:
+   - Go to your GitHub repository
+   - Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Add `AWS_ACCESS_KEY_ID` with the Access key ID
+   - Add `AWS_SECRET_ACCESS_KEY` with the Secret access key
+   - Add `AWS_REGION` with your preferred region (e.g., `us-east-1`)
+
+**If you lost existing credentials:**
+
+1. **Deactivate Old Keys**:
+   - Go to IAM → Users → [Your username]
+   - Security credentials → Access keys
+   - Find the old key and click "Deactivate"
+
+2. **Create New Keys**:
+   - Follow steps 4-6 above to create new access keys
+
+3. **Update GitHub Secrets**:
+   - Replace the old secrets in GitHub repository settings
+
+#### Alternative: Using IAM Roles (More Secure)
+
+For better security, consider using IAM roles instead of access keys:
+
+1. **Create OIDC Provider for GitHub**:
+   ```bash
+   # Via AWS CLI
+   aws iam create-open-id-connect-provider \
+     --url https://token.actions.githubusercontent.com \
+     --client-id-list sts.amazonaws.com \
+     --thumbprint-list 6938fd4d98bab03faadb97b34396831e3780aea1
+   ```
+
+2. **Create IAM Role**:
+   - Create role with trust relationship for GitHub Actions
+   - Attach necessary S3 and CloudFront policies
+   - Update GitHub Actions to use role instead of access keys
+
 #### Verify Deployment Workflow
 
 1. **Check Workflow File**:

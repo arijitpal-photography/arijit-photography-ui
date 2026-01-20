@@ -81,7 +81,7 @@ export default function About() {
                         more than 20 countries and being exhibited in over 35. Prestigious
                         institutions like the Photography Society of America (PSA), the
                         International Federation of Photographic Art (FIAP), and the Global
-                        Photographic Union (GPU) have honored my contributions to the art.
+                        Photographic Union (GPU) have honored my contributions to the art of photography.
                     </Text>
 
                     {/* Distinctions & Recognitions */}

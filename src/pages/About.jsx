@@ -74,14 +74,14 @@ export default function About() {
                     </Text>
 
                     <Text fontSize="lg" mb={4} lineHeight="tall">
-                        <h3>From the raw beauty of nature to the grandeur of city skylines,
+                        Test From the raw beauty of nature to the grandeur of city skylines,
                         from the serenity of landscapes to the vibrancy of wildlife, I
                         embrace multiple genres, each offering a unique way to see and feel
                         the world. My work has been recognized globally, earning awards from
                         more than 20 countries and being exhibited in over 35. Prestigious
                         institutions like the Photography Society of America (PSA), the
                         International Federation of Photographic Art (FIAP), and the Global
-                            Photographic Union (GPU) have honored my contributions to the art of photography.</h3>
+                            Photographic Union (GPU) have honored my contributions to the art of photography.
                     </Text>
 
                     {/* Distinctions & Recognitions */}
